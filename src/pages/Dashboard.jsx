@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
+import { API_BASE_URL } from '../config/api'
 
 function Dashboard({ user, onLogout }) {
   const [dashboard, setDashboard] = useState(null)
@@ -56,7 +57,7 @@ function Dashboard({ user, onLogout }) {
   const loadDashboard = useCallback(async () => {
     if (!user?.id) return
     try {
-      const response = await fetch(`http://localhost:8080/api/dashboard/${user.id}`)
+      const response = await fetch(`${API_BASE_URL}/api/dashboard/${user.id}`)
       if (!response.ok) {
         throw new Error('Failed to load dashboard data.')
       }
@@ -75,7 +76,7 @@ function Dashboard({ user, onLogout }) {
   // Load Career Roles List
   const loadCareerRoles = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/career-roles')
+      const response = await fetch(`${API_BASE_URL}/api/career-roles`)
       if (response.ok) {
         const roles = await response.json()
         setCareerRoles(roles)
@@ -110,7 +111,7 @@ function Dashboard({ user, onLogout }) {
     setRoleMessage('')
 
     try {
-      const response = await fetch('http://localhost:8080/api/target-role', {
+      const response = await fetch(`${API_BASE_URL}/api/target-role`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -138,7 +139,7 @@ function Dashboard({ user, onLogout }) {
     setRoadmapMessage('')
 
     try {
-      const response = await fetch(`http://localhost:8080/api/roadmaps/generate/${user.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/roadmaps/generate/${user.id}`, {
         method: 'POST',
       })
 
@@ -182,7 +183,7 @@ function Dashboard({ user, onLogout }) {
     setSavingSkill(true)
 
     try {
-      const response = await fetch('http://localhost:8080/api/skills', {
+      const response = await fetch(`${API_BASE_URL}/api/skills`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -210,7 +211,7 @@ function Dashboard({ user, onLogout }) {
 
   const handleUpdateSkillLevel = async (skill) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/skills/${skill.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/skills/${skill.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -235,7 +236,7 @@ function Dashboard({ user, onLogout }) {
     if (!window.confirm(`Are you sure you want to delete skill "${skill.name}"?`)) return
 
     try {
-      const response = await fetch(`http://localhost:8080/api/skills/${skill.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/skills/${skill.id}`, {
         method: 'DELETE',
       })
 
@@ -288,8 +289,8 @@ function Dashboard({ user, onLogout }) {
     try {
       const isEditing = editingProjectId !== null
       const url = isEditing
-        ? `http://localhost:8080/api/projects/${editingProjectId}`
-        : 'http://localhost:8080/api/projects'
+        ? `${API_BASE_URL}/api/projects/${editingProjectId}`
+        : `${API_BASE_URL}/api/projects`
 
       const response = await fetch(url, {
         method: isEditing ? 'PUT' : 'POST',
@@ -326,7 +327,7 @@ function Dashboard({ user, onLogout }) {
     setDeletingProjectId(project.id)
 
     try {
-      const response = await fetch(`http://localhost:8080/api/projects/${project.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/projects/${project.id}`, {
         method: 'DELETE',
       })
 
@@ -382,8 +383,8 @@ function Dashboard({ user, onLogout }) {
     try {
       const isEditing = editingCertId !== null
       const url = isEditing
-        ? `http://localhost:8080/api/certifications/${editingCertId}`
-        : 'http://localhost:8080/api/certifications'
+        ? `${API_BASE_URL}/api/certifications/${editingCertId}`
+        : `${API_BASE_URL}/api/certifications`
 
       const response = await fetch(url, {
         method: isEditing ? 'PUT' : 'POST',
@@ -416,7 +417,7 @@ function Dashboard({ user, onLogout }) {
     setDeletingCertId(cert.id)
 
     try {
-      const response = await fetch(`http://localhost:8080/api/certifications/${cert.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/certifications/${cert.id}`, {
         method: 'DELETE',
       })
       if (!response.ok) {
@@ -445,7 +446,7 @@ function Dashboard({ user, onLogout }) {
     setSavingProgress(true)
 
     try {
-      const response = await fetch('http://localhost:8080/api/progress', {
+      const response = await fetch(`${API_BASE_URL}/api/progress`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -475,7 +476,7 @@ function Dashboard({ user, onLogout }) {
     setDeletingProgressId(prog.id)
 
     try {
-      const response = await fetch(`http://localhost:8080/api/progress/${prog.id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/progress/${prog.id}`, {
         method: 'DELETE',
       })
       if (!response.ok) throw new Error('Failed to delete progress.')
@@ -493,7 +494,7 @@ function Dashboard({ user, onLogout }) {
   const handleToggleRoadmapStep = async (stepId) => {
     setTogglingStepId(stepId)
     try {
-      const response = await fetch(`http://localhost:8080/api/roadmaps/${stepId}/toggle`, {
+      const response = await fetch(`${API_BASE_URL}/api/roadmaps/${stepId}/toggle`, {
         method: 'PATCH',
       })
 
@@ -516,7 +517,7 @@ function Dashboard({ user, onLogout }) {
   const handleDeleteRoadmapStep = async (stepId) => {
     if (!window.confirm('Delete this roadmap step?')) return
     try {
-      const response = await fetch(`http://localhost:8080/api/roadmaps/${stepId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/roadmaps/${stepId}`, {
         method: 'DELETE',
       })
       if (!response.ok) throw new Error('Failed to delete step.')

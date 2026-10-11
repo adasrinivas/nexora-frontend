@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { API_BASE_URL } from '../config/api'
 
 function Login({ onLoginSuccess, onRegister }) {
   const [email, setEmail] = useState('')
@@ -21,7 +22,7 @@ function Login({ onLoginSuccess, onRegister }) {
     setLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8080/api/users/login', {
+      const response = await fetch(`${API_BASE_URL}/api/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +62,7 @@ function Login({ onLoginSuccess, onRegister }) {
     } catch (error) {
       console.error('Login network error:', error)
       setIsError(true)
-      setMessage('Could not reach the backend server (http://localhost:8080). Check that it is running.')
+      setMessage(`Could not reach the backend server (${API_BASE_URL}). Check that it is running.`)
     } finally {
       setLoading(false)
     }

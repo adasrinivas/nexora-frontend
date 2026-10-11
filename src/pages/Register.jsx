@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { API_BASE_URL } from '../config/api'
 
 function Register({ onRegisterSuccess, onBackToLogin }) {
   const [name, setName] = useState('')
@@ -28,7 +29,7 @@ function Register({ onRegisterSuccess, onBackToLogin }) {
     setLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8080/api/users', {
+      const response = await fetch(`${API_BASE_URL}/api/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,7 +64,7 @@ function Register({ onRegisterSuccess, onBackToLogin }) {
     } catch (error) {
       console.error('Registration network error:', error)
       setIsError(true)
-      setMessage('Cannot connect to backend server (http://localhost:8080). Make sure it is running.')
+      setMessage(`Cannot connect to backend server (${API_BASE_URL}). Make sure it is running.`)
     } finally {
       setLoading(false)
     }
